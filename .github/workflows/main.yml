@@ -36,6 +36,7 @@ jobs:
             htmlname="docs/$filename.html"
             pdftohtml -s -c "$file" "$htmlname"
             echo "<li><a href='$filename.html'>$filename</a></li>" >> docs/index.html
+            echo "<html><body><h1>Klik hier om het bron bestand te openen: <a href='https://example.com/$filename.pdf'>$filename.pdf</a></h1></body></html>" | cat - "$htmlname" > temp && mv temp "$htmlname"
           done
           echo "</ul></body></html>" >> docs/index.html
           find docs -name "*-html.html" -exec bash -c 'mv "$0" "${0//-html/}"' {} \;
