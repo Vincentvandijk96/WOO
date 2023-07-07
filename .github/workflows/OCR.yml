@@ -17,6 +17,7 @@ jobs:
       run: |
         sudo apt-get update
         sudo apt-get install -y tesseract-ocr
+        sudo apt-get install -y poppler-utils
 
     - name: Remove existing pdf directory
       run: |
@@ -26,23 +27,22 @@ jobs:
       run: |
         mkdir -p pdf
 
-    - name: Move files to pdf directory
+    - name: Move PDF files to pdf directory
       run: |
-        mv * pdf/ || true
+        mv *.pdf pdf/ || true
 
     - name: Perform OCR on PDF files
       run: |
         cd pdf
         for file in *.pdf; do
-          if [ ! -f "${file%.*}.txt" ]; then
-            tesseract "$file" "${file%.*}" -l eng
-          fi
+          tesseract "$file" "${file%.*}" -l eng
         done
 
-    - name: Move processed files back to pdf directory
+    - name: Move processed PDF files to pdf directory
       run: |
-        mv * ..
+        mv *.txt ..
         cd ..
+        mv pdf/*.pdf .
         rm -r pdf
 
     - name: Configure Git
@@ -59,4 +59,3 @@ jobs:
       run: |
         git pull origin main
         git push origin main
-        
