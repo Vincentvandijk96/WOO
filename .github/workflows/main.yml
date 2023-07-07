@@ -20,7 +20,8 @@ jobs:
 
       - name: Remove existing HTML files
         run: |
-          rm -f docs/index.html
+          rm -f docs/*
+
 
       - name: Convert PDF to HTML
         run: |
@@ -46,13 +47,13 @@ jobs:
             echo "  <url><loc>https://example.com/docs/$filename.html</loc></url>" >> sitemap.xml
           done
           echo "</urlset>" >> sitemap.xml
-          
+
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git rm -rf --ignore-unmatch docs/index.html
           git add docs/*.html docs/sitemap.xml
+          git add docs/*.png
           git status
           git commit -m "Convert PDF to HTML and generate sitemap"
           git push
