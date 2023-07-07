@@ -20,12 +20,12 @@ jobs:
 
       - name: Build and install pdf2htmlEX
         run: |
-          git clone --depth 1 --branch v0.18.8 https://github.com/coolwanglu/pdf2htmlEX.git
+          git clone --depth 1 https://github.com/coolwanglu/pdf2htmlEX.git
           cd pdf2htmlEX
           cmake .
           make
           sudo make install
-
+          
       - name: Convert PDF to HTML
         run: |
           for file in $(find . -name "*.pdf"); do
@@ -42,3 +42,8 @@ jobs:
           git add *.html
           git commit -m "Convert PDF to HTML"
           git push
+
+
+
+
+
