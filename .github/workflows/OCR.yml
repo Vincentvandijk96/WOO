@@ -18,9 +18,16 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y tesseract-ocr
 
+    - name: Remove existing pdf directory
+      run: |
+        rm -rf pdf
+
+    - name: Create pdf directory
+      run: |
+        mkdir -p pdf
+
     - name: Move files to pdf directory
       run: |
-        mkdir pdf
         mv * pdf/ || true
 
     - name: Perform OCR on PDF files
@@ -34,7 +41,8 @@ jobs:
 
     - name: Move processed files back to pdf directory
       run: |
-        mv pdf/* .
+        mv * ..
+        cd ..
         rm -r pdf
 
     - name: Configure Git
