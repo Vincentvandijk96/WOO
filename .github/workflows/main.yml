@@ -23,6 +23,10 @@ jobs:
           shopt -s extglob
           rm -rf docs/!(.git)
 
+      - name: Create docs directory
+        run: |
+          mkdir -p docs
+
       - name: Create index.html
         run: |
           echo "<html><body><ul>" > docs/index.html
