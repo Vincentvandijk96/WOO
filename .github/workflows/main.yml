@@ -20,12 +20,12 @@ jobs:
 
       - name: Convert PDF to HTML
         run: |
+          mkdir -p docs
           find . -name "*.pdf" -print0 | while IFS= read -r -d '' file; do
             filename=$(basename "$file")
             filename="${filename%.*}"
-            htmlname="$filename.html"
+            htmlname="docs/$filename.html"
             pdftohtml -s -c "$file" "$htmlname"
-            mv "$htmlname" docs/
           done
 
       - name: Commit changes
