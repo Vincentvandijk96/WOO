@@ -30,6 +30,8 @@ jobs:
             filename=$(basename "$file" .pdf)
             htmlname="docs/$filename.html"
             pdftohtml -s -c "$file" "$htmlname"
+            # Pas de bestandsextensie aan naar .html
+            mv "$htmlname.html" "$htmlname"
             echo "<li><a href='$filename.html'>$filename</a></li>" >> docs/index.html
           done
           echo "</ul></body></html>" >> docs/index.html
