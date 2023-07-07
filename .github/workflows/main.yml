@@ -52,5 +52,6 @@ jobs:
           git config --local user.name "GitHub Action"
           git add docs/*.html docs/sitemap.xml
           git add docs/*.png
+          git status  # Voeg deze regel toe om de status van de gewijzigde bestanden te controleren
           git commit -m "Convert PDF to HTML and generate sitemap"
           git push
