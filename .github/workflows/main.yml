@@ -18,18 +18,16 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y poppler-utils
 
-      - name: Remove existing HTML files
+      - name: Remove existing docs directory
         run: |
-          rm -f docs/*.html
+          rm -rf docs
 
-      - name: Remove existing sitemap
+      - name: Create docs directory
         run: |
-          rm -f docs/sitemap.xml
+          mkdir docs
 
       - name: Convert PDF to HTML
         run: |
-          echo "</ul></body></html>" >> docs/index.html
-          mkdir -p docs
           echo "<html><body><ul>" > docs/index.html
           find . -name "*.pdf" -print0 | while IFS= read -r -d '' file; do
             filename=$(basename "$file" .pdf)
@@ -38,7 +36,6 @@ jobs:
             echo "<li><a href='$filename.html'>$filename</a></li>" >> docs/index.html
           done
           echo "</ul></body></html>" >> docs/index.html
-          find docs -name "*-html.html" -exec bash -c 'mv "$0" "${0//-html/}"' {} \;
 
       - name: Generate sitemap.xml
         run: |
@@ -47,7 +44,7 @@ jobs:
           echo "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" >> sitemap.xml
           for file in *.html; do
             filename=$(basename "$file" .html)
-            echo "  <url><loc>https://github.com/Vincentvandijk96/WOO/docs/$filename.html</loc></url>" >> sitemap.xml
+            echo "  <url><loc>https://example.com/docs/$filename.html</loc></url>" >> sitemap.xml
           done
           echo "</urlset>" >> sitemap.xml
 
@@ -56,7 +53,6 @@ jobs:
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
           git add docs/*.html docs/sitemap.xml
-          git add docs/*.png
           git status
           git commit -m "Convert PDF to HTML and generate sitemap"
           git push
