@@ -18,7 +18,9 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y poppler-utils
 
-
+      - name: Remove existing HTML files
+        run: |
+          rm -f docs/index.html
 
       - name: Convert PDF to HTML
         run: |
@@ -49,8 +51,8 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git rm -rf --ignore-unmatch docs/*
-          git add docs/*.html docs/sitemap.xml
+          git rm -rf --ignore-unmatch docs/index.html
+          git add docs/*.pdf docs/sitemap.xml
           git status
           git commit -m "Convert PDF to HTML and generate sitemap"
           git push
