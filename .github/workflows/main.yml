@@ -22,10 +22,6 @@ jobs:
         run: |
           rm -f docs/*.html
 
-      - name: Remove existing sitemap
-        run: |
-          rm -f docs/sitemap.xml
-
       - name: Convert PDF to HTML
         run: |
           echo "</ul></body></html>" >> docs/index.html
