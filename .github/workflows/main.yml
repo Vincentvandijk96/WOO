@@ -24,14 +24,13 @@ jobs:
 
       - name: Convert PDF to HTML
         run: |
+          echo "</ul></body></html>" >> docs/index.html
           mkdir -p docs
           echo "<html><body><ul>" > docs/index.html
           find . -name "*.pdf" -print0 | while IFS= read -r -d '' file; do
             filename=$(basename "$file" .pdf)
-            htmlname="docs/$filename.html"
+            htmlname="docs/$filename.html"  # Update de waarde van htmlname
             pdftohtml -s -c "$file" "$htmlname"
-            # Pas de bestandsextensie aan naar .html
-            mv "$htmlname.html" "$htmlname"
             echo "<li><a href='$filename.html'>$filename</a></li>" >> docs/index.html
           done
           echo "</ul></body></html>" >> docs/index.html
