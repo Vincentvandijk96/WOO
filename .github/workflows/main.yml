@@ -16,7 +16,7 @@ jobs:
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake gcc g++ libpoppler-cpp-dev libpoppler-glib-dev pkg-config
+          sudo apt-get install -y cmake gcc g++ libpoppler-cpp-dev libpoppler-glib-dev pkg-config libfontforge1
 
       - name: Build and install pdf2htmlEX
         run: |
