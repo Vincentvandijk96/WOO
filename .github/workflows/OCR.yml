@@ -1,0 +1,46 @@
+name: PDF Text Recognition
+
+on:
+  push:
+    branches:
+      - main  # Pas de branchnaam aan indien nodig
+
+jobs:
+  text_recognition:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v2
+
+    - name: Set up Tesseract OCR
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y tesseract-ocr
+
+    - name: Move files to pdf directory
+      run: |
+        mkdir pdf
+        mv * pdf/ || true
+
+    - name: Perform OCR on PDF files
+      run: |
+        cd pdf
+        for file in *.pdf; do
+          if [ ! -f "${file%.*}.txt" ]; then
+            tesseract "$file" "${file%.*}" -l eng
+          fi
+        done
+
+    - name: Move processed files back to pdf directory
+      run: |
+        mv pdf/* .
+        rm -r pdf
+
+    - name: Commit and push changes
+      run: |
+        git config --local user.email "actions@github.com"
+        git config --local user.name "GitHub Actions"
+        git add .
+        git commit -m "Perform PDF text recognition"
+        git push
