@@ -18,15 +18,22 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y poppler-utils
 
+      - name: Remove existing HTML files
+        run: |
+          rm -f docs/*.html
+
       - name: Convert PDF to HTML
         run: |
           mkdir -p docs
+          echo "<html><body><ul>" > docs/index.html
           find . -name "*.pdf" -print0 | while IFS= read -r -d '' file; do
             filename=$(basename "$file")
             filename="${filename%.*}"
             htmlname="docs/$filename.html"
             pdftohtml -s -c "$file" "$htmlname"
+            echo "<li><a href='$filename.html'>$filename</a></li>" >> docs/index.html
           done
+          echo "</ul></body></html>" >> docs/index.html
 
       - name: Commit changes
         run: |
