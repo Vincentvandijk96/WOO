@@ -17,10 +17,9 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y poppler-utils
-          
-      - name: List directory contents
-         run: |
           ls -R
+          
+
 
 
       - name: Convert PDF to HTML
