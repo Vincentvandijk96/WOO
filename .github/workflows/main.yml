@@ -13,10 +13,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install pdf2htmlEX
+      - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt install https://github.com/pdf2htmlEX/pdf2htmlEX/releases/download/v0.18.8.rc1/pdf2htmlEX-0.18.8.rc1-master-20200630-Ubuntu-bionic-x86_64.deb
+          sudo apt-get install -y cmake gcc g++ libpoppler-cpp-dev libpoppler-glib-dev pkg-config
+
+      - name: Build and install pdf2htmlEX
+        run: |
+          git clone --depth 1 --branch v0.18.8 https://github.com/coolwanglu/pdf2htmlEX.git
+          cd pdf2htmlEX
+          cmake .
+          make
+          sudo make install
 
       - name: Convert PDF to HTML
         run: |
