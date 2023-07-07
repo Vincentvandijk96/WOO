@@ -34,6 +34,7 @@ jobs:
             echo "<li><a href='$filename.html'>$filename</a></li>" >> docs/index.html
           done
           echo "</ul></body></html>" >> docs/index.html
+          find docs -name "*-html.html" -exec bash -c 'mv "$0" "${0//-html/}"' {} \;
 
       - name: Generate sitemap.xml
         run: |
@@ -55,4 +56,3 @@ jobs:
           git status  # Voeg deze regel toe om de status van de gewijzigde bestanden te controleren
           git commit -m "Convert PDF to HTML and generate sitemap"
           git push
-          
