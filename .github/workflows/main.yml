@@ -27,18 +27,27 @@ jobs:
           mkdir -p docs
           echo "<html><body><ul>" > docs/index.html
           find . -name "*.pdf" -print0 | while IFS= read -r -d '' file; do
-            filename=$(basename "$file")
-            filename="${filename%.*}"
+            filename=$(basename "$file" .pdf)
             htmlname="docs/$filename.html"
             pdftohtml -s -c "$file" "$htmlname"
             echo "<li><a href='$filename.html'>$filename</a></li>" >> docs/index.html
           done
           echo "</ul></body></html>" >> docs/index.html
 
+      - name: Generate sitemap.xml
+        run: |
+          cd docs
+          echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > sitemap.xml
+          echo "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" >> sitemap.xml
+          for file in *.html; do
+            echo "  <url><loc>https://example.com/docs/$file</loc></url>" >> sitemap.xml
+          done
+          echo "</urlset>" >> sitemap.xml
+
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add docs/*.html
-          git commit -m "Convert PDF to HTML"
+          git add docs/*.html docs/sitemap.xml
+          git commit -m "Convert PDF to HTML and generate sitemap"
           git push
