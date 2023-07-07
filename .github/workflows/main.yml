@@ -1,0 +1,36 @@
+name: PDF to HTML Conversion
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  convert:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2
+
+      - name: Install pdf2htmlEX
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y pdf2htmlEX
+
+      - name: Convert PDF to HTML
+        run: |
+          for file in $(find . -name "*.pdf"); do
+            filename=$(basename "$file")
+            filename="${filename%.*}"
+            htmlname="$filename.html"
+            pdf2htmlEX "$file" "$htmlname"
+          done
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add *.html
+          git commit -m "Convert PDF to HTML"
+          git push
