@@ -48,15 +48,11 @@ jobs:
           done
           echo "</urlset>" >> sitemap.xml
 
-      - name: Remove existing files in docs directory
-        run: |
-          rm -rf docs/*
-
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add docs/*
+          git add docs/*.html docs/sitemap.xml
           git status
           git commit -m "Convert PDF to HTML and generate sitemap"
           git push
