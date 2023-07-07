@@ -18,26 +18,24 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y poppler-utils
 
-      - name: Remove existing HTML files
+      - name: Remove existing files in docs directory
         run: |
-          rm -f docs/*.html
+          shopt -s extglob
+          rm -rf docs/!(.git)
 
-      - name: Remove existing sitemap
+      - name: Create index.html
         run: |
-          rm -f docs/sitemap.xml
+          echo "<html><body><ul>" > docs/index.html
+          echo "</ul></body></html>" >> docs/index.html
 
       - name: Convert PDF to HTML
         run: |
-          echo "</ul></body></html>" >> docs/index.html
-          mkdir -p docs
-          echo "<html><body><ul>" > docs/index.html
           find . -name "*.pdf" -print0 | while IFS= read -r -d '' file; do
             filename=$(basename "$file" .pdf)
             htmlname="docs/$filename.html"
             pdftohtml -s -c "$file" "$htmlname"
             echo "<li><a href='$filename.html'>$filename</a></li>" >> docs/index.html
           done
-          echo "</ul></body></html>" >> docs/index.html
           find docs -name "*-html.html" -exec bash -c 'mv "$0" "${0//-html/}"' {} \;
 
       - name: Generate sitemap.xml
