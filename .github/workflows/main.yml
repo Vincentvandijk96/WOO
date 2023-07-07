@@ -57,7 +57,7 @@ jobs:
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git rm -r --cached docs/*      # Voeg deze regel toe
+          git rm -r docs/*               # Voeg deze regel toe
           git add docs/*.html docs/sitemap.xml
           git add docs/*.png
           git status
