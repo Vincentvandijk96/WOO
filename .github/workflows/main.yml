@@ -17,24 +17,21 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y poppler-utils
-          ls -R
-          
-
-
 
       - name: Convert PDF to HTML
         run: |
-          for file in $(find . -name "*.pdf"); do
+          find . -name "*.pdf" -print0 | while IFS= read -r -d '' file; do
             filename=$(basename "$file")
             filename="${filename%.*}"
             htmlname="$filename.html"
             pdftohtml -s -c "$file" "$htmlname"
+            mv "$htmlname" docs/
           done
 
       - name: Commit changes
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Action"
-          git add *.html
+          git add docs/*.html
           git commit -m "Convert PDF to HTML"
           git push
