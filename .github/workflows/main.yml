@@ -13,26 +13,18 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install dependencies
+      - name: Install pdf2html
         run: |
           sudo apt-get update
-          sudo apt-get install -y cmake gcc g++ libpoppler-cpp-dev libpoppler-glib-dev pkg-config libfontforge1
+          sudo apt-get install -y poppler-utils
 
-      - name: Build and install pdf2htmlEX
-        run: |
-          git clone --depth 1 https://github.com/coolwanglu/pdf2htmlEX.git
-          cd pdf2htmlEX
-          cmake .
-          make
-          sudo make install
-          
       - name: Convert PDF to HTML
         run: |
           for file in $(find . -name "*.pdf"); do
             filename=$(basename "$file")
             filename="${filename%.*}"
             htmlname="$filename.html"
-            pdf2htmlEX "$file" "$htmlname"
+            pdftohtml -s -c "$file" "$htmlname"
           done
 
       - name: Commit changes
@@ -42,8 +34,3 @@ jobs:
           git add *.html
           git commit -m "Convert PDF to HTML"
           git push
-
-
-
-
-
