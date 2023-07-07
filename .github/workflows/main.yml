@@ -40,7 +40,8 @@ jobs:
           echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > sitemap.xml
           echo "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" >> sitemap.xml
           for file in *.html; do
-            echo "  <url><loc>https://example.com/docs/$file</loc></url>" >> sitemap.xml
+            filename=$(basename "$file" .html)
+            echo "  <url><loc>https://example.com/docs/$filename.html</loc></url>" >> sitemap.xml
           done
           echo "</urlset>" >> sitemap.xml
 
