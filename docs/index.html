@@ -49,7 +49,7 @@
 </head>
 <body>
     <div id="header">
-        <img src="afbeelding.jpg" alt="Afbeelding" style="width: 100%;">
+        <img src="https://www.coevorden.nl/_next/image?url=http%3A%2F%2Fdvg-backend-httpd%2Fsites%2Fcoevorden%2Ffiles%2Fstyles%2Fopen_online_17_4%2Fpublic%2F2023-03%2Fpoortvdrenthe%25201920x450.jpg%3Fh%3D8c9f5fdd%26itok%3DNUCuPP_u&w=1920&q=75" alt="Afbeelding" style="width: 100%;">
         <div id="search">
             <input type="text" id="searchInput" placeholder="Voer hier een zoekwoord in">
             <button onclick="search()">Zoeken</button>
@@ -81,6 +81,10 @@
             var linkContainer = document.getElementById('links');
             var links = linkContainer.getElementsByClassName('link');
 
+            if (searchTerms.length === 0) {
+                showAllLinks();
+            }
+
             searchTerms.push(searchTerm);
             document.getElementById('searchWord').textContent = searchTerms.join(', ');
             resetLinks();
@@ -109,6 +113,7 @@
         function resetSearch() {
             searchTerms = [];
             document.getElementById('searchWord').textContent = '';
+            showAllLinks();
             resetLinks();
             document.getElementById('resetButton').style.display = 'none';
         }
@@ -120,6 +125,17 @@
             for (var i = 0; i < links.length; i++) {
                 var link = links[i];
                 link.style.display = 'none';
+            }
+        }
+
+        function showAllLinks() {
+            var linkContainer = document.getElementById('links');
+            var links = linkContainer.getElementsByClassName('link');
+
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i];
+                link.style.display = 'block';
+                link.style.order = 0;
             }
         }
     </script>
