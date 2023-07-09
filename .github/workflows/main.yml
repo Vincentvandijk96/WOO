@@ -23,7 +23,7 @@ jobs:
 
       - name: Create index.html
         run: |
-          cp index.html docs/index.html
+          cp web/index.html docs/index.html
           cd docs
           echo "<ul>" > index.html
           find . -name "*.pdf" | while read filename; do
