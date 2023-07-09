@@ -24,6 +24,15 @@
             font-size: 16px;
         }
 
+        #search button {
+            margin-top: 10px;
+        }
+
+        #resetButton {
+            margin-left: 10px;
+            display: none;
+        }
+
         #links {
             max-width: 600px;
             margin: 0 auto;
@@ -34,15 +43,17 @@
             margin-bottom: 10px;
             padding: 10px;
             border: 1px solid #ccc;
+            display: none;
         }
     </style>
 </head>
 <body>
     <div id="header">
-        <img src="afbeelding.jpg" alt="https://www.coevorden.nl/_next/image?url=http%3A%2F%2Fdvg-backend-httpd%2Fsites%2Fcoevorden%2Ffiles%2Fstyles%2Fopen_online_17_4%2Fpublic%2F2023-03%2Fpoortvdrenthe%25201920x450.jpg%3Fh%3D8c9f5fdd%26itok%3DNUCuPP_u&w=1920&q=75" style="width: 100%;">
+        <img src="afbeelding.jpg" alt="Afbeelding" style="width: 100%;">
         <div id="search">
             <input type="text" id="searchInput" placeholder="Voer hier een zoekwoord in">
             <button onclick="search()">Zoeken</button>
+            <button onclick="resetSearch()" id="resetButton">Reset</button>
         </div>
     </div>
     <div id="links">
@@ -62,21 +73,53 @@
     </div>
 
     <script>
+        var searchTerms = [];
+
         function search() {
             var searchInput = document.getElementById('searchInput');
             var searchTerm = searchInput.value.toLowerCase();
             var linkContainer = document.getElementById('links');
             var links = linkContainer.getElementsByClassName('link');
 
-            document.getElementById('searchWord').textContent = searchTerm;
+            searchTerms.push(searchTerm);
+            document.getElementById('searchWord').textContent = searchTerms.join(', ');
+            resetLinks();
+
             for (var i = 0; i < links.length; i++) {
                 var link = links[i];
                 var linkTitle = link.getElementsByTagName('h4')[0].textContent.toLowerCase();
-                link.style.display = 'none';
+                var matchCount = 0;
 
-                if (linkTitle.indexOf(searchTerm) !== -1) {
-                    link.style.display = 'block';
+                for (var j = 0; j < searchTerms.length; j++) {
+                    if (linkTitle.indexOf(searchTerms[j]) !== -1) {
+                        matchCount++;
+                    }
                 }
+
+                if (matchCount > 0) {
+                    link.style.display = 'block';
+                    link.style.order = -matchCount;
+                }
+            }
+
+            searchInput.value = '';
+            document.getElementById('resetButton').style.display = 'inline-block';
+        }
+
+        function resetSearch() {
+            searchTerms = [];
+            document.getElementById('searchWord').textContent = '';
+            resetLinks();
+            document.getElementById('resetButton').style.display = 'none';
+        }
+
+        function resetLinks() {
+            var linkContainer = document.getElementById('links');
+            var links = linkContainer.getElementsByClassName('link');
+
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i];
+                link.style.display = 'none';
             }
         }
     </script>
