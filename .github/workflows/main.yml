@@ -1,4 +1,4 @@
-name: PDF to HTML Conversion
+name: publiceren pdf documenten
 
 on:
   push:
@@ -13,31 +13,19 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install pdf2htmlex
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y libfontconfig1 libcairo2 libjpeg-turbo8
-          wget https://github.com/pdf2htmlEX/pdf2htmlEX/releases/download/v0.18.8.rc1/pdf2htmlEX-0.18.8.rc1-master-20200630-Ubuntu-bionic-x86_64.deb
-          sudo mv pdf2htmlEX-0.18.8.rc1-master-20200630-Ubuntu-bionic-x86_64.deb pdf2htmlEX.deb
-          sudo apt install ./pdf2htmlEX.deb
-
       - name: Remove existing HTML files
         run: |
           rm -f docs/*
           
-      - name: Convert PDF naar HTML
+      - name: Copy PDF files to docs
         run: |
-          find . -name "*.pdf" | while read filename; do
-            html_file="${filename%.*}.html"
-            pdf2htmlEX "$filename" "$html_file"
-            mv "$html_file" docs/
-          done
+          find . -name "*.pdf" -exec cp {} docs/ \;
 
       - name: Create index.html
         run: |
           cd docs
           echo "<html><body><ul>" > index.html
-          find . -name "*.html" | while read filename; do
+          find . -name "*.pdf" | while read filename; do
             echo "<li><a href='$filename'>$filename</a></li>" >> index.html
           done
           echo "</ul></body></html>" >> index.html
@@ -47,10 +35,10 @@ jobs:
           cd docs
           echo "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" > sitemap.xml
           echo "<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">" >> sitemap.xml
-          for file in *.html; do
-            filename=$(basename "$file" .html)
+          for file in *.pdf; do
+            filename=$(basename "$file" .pdf)
             echo "  <url>" >> sitemap.xml
-            echo "    <loc>https://vincentvandijk96.github.io/WOO/$filename.html</loc>" >> sitemap.xml
+            echo "    <loc>https://vincentvandijk96.github.io/WOOTEST/$filename.pdf</loc>" >> sitemap.xml
             echo "  </url>" >> sitemap.xml
           done
           echo "</urlset>" >> sitemap.xml
