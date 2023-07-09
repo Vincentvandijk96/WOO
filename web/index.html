@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Voorbeeld Linkjes</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+
+        header {
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .search-bar {
+            text-align: center;
+            margin: 20px 0;
+        }
+
+        .search-bar input[type="text"] {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+        }
+
+        .link-list {
+            list-style-type: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .link-list li {
+            margin-bottom: 10px;
+        }
+
+        .link-list li a {
+            display: block;
+            padding: 5px;
+            background-color: #f2f2f2;
+            text-decoration: none;
+            color: #333;
+            border-radius: 5px;
+        }
+
+        .link-list li a:hover {
+            background-color: #e2e2e2;
+        }
+
+        .highlight {
+            font-weight: bold;
+            color: #ff0000;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <img src="https://www.coevorden.nl/_next/image?url=http%3A%2F%2Fdvg-backend-httpd%2Fsites%2Fcoevorden%2Ffiles%2Fstyles%2Fopen_online_17_4%2Fpublic%2F2023-03%2Fpoortvdrenthe%25201920x450.jpg%3Fh%3D8c9f5fdd%26itok%3DNUCuPP_u&w=1920&q=75" alt="Header Afbeelding" style="width: 100%; max-width: 100%;">
+    </header>
+
+    <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Zoek naar trefwoorden">
+    </div>
+
+    <ul class="link-list" id="linkList">
+        <li>
+            <a href="voorbeeld1.html">Voorbeeld Link 1</a>
+        </li>
+        <li>
+            <a href="voorbeeld2.html">Voorbeeld Link 2</a>
+        </li>
+        <li>
+            <a href="voorbeeld3.html">Voorbeeld Link 3</a>
+        </li>
+        <li>
+            <a href="voorbeeld4.html">Voorbeeld Link 4</a>
+        </li>
+    </ul>
+
+    <script>
+        var searchInput = document.getElementById('searchInput');
+        var linkList = document.getElementById('linkList');
+
+        searchInput.addEventListener('input', filterLinks);
+
+        function filterLinks() {
+            var searchValue = searchInput.value.toLowerCase();
+            var links = linkList.getElementsByTagName('a');
+
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i];
+                var linkText = link.textContent.toLowerCase();
+
+                if (linkText.indexOf(searchValue) > -1) {
+                    link.style.display = 'block';
+                } else {
+                    link.style.display = 'none';
+                }
+            }
+
+            showMostMatchedLink();
+        }
+
+        function showMostMatchedLink() {
+            var links = linkList.getElementsByTagName('a');
+            var maxMatches = 0;
+            var mostMatchedLink = null;
+
+            for (var i = 0; i < links.length; i++) {
+                var link = links[i];
+                var linkText = link.textContent.toLowerCase();
+                var searchValue = searchInput.value.toLowerCase();
+                var matches = (linkText.match(new RegExp(searchValue, 'gi')) || []).length;
+
+                if (matches > maxMatches) {
+                    maxMatches = matches;
+                    mostMatchedLink = link;
+                }
+            }
+
+            if (mostMatchedLink) {
+                var highlightedText = mostMatchedLink.innerHTML.replace(new RegExp(searchInput.value, 'gi'), '<span class="highlight">$&</span>');
+                mostMatchedLink.innerHTML = highlightedText;
+                mostMatchedLink.style.fontWeight = 'bold';
+            }
+        }
+    </script>
+</body>
+</html>
