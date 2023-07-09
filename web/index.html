@@ -1,131 +1,45 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <title>Zoekvoorbeeld</title>
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
-    .header {
-      width: 100%;
-    }
-    .search-container {
-      text-align: center;
-      padding: 20px;
-    }
-    .search-input {
-      width: 300px;
-      height: 30px;
-      margin-right: 10px;
-    }
-    .search-button {
-      padding: 8px 16px;
-    }
-    .reset-button {
-      margin-top: 10px;
-      padding: 8px 16px;
-    }
-    .results-container {
-      margin: 20px;
-    }
-    .result-item {
-      margin-bottom: 10px;
-    }
-  </style>
+  <title>Zoekbalk voor HTML-pagina</title>
   <script>
     function search() {
-      var input = document.getElementById('search-input').value.toLowerCase();
-      var terms = input.split(' ');
+      var input = document.getElementById('searchInput');
+      var searchText = input.value.toLowerCase();
+      var elements = document.getElementsByClassName('searchable');
 
-      var results = [];
-      var matchCount = [];
+      for (var i = 0; i < elements.length; i++) {
+        var element = elements[i];
+        var text = element.innerText.toLowerCase();
 
-      if (input === '') {
-        results = document.getElementsByClassName('result-item');
-      } else if (terms.length === 1) {
-        results = document.querySelectorAll('.result-item[data-keywords*="' + terms[0] + '"]');
-      } else if (terms.length === 2) {
-        var results1 = document.querySelectorAll('.result-item[data-keywords*="' + terms[0] + '"]');
-        var results2 = document.querySelectorAll('.result-item[data-keywords*="' + terms[1] + '"]');
-        results = Array.from(results1).concat(Array.from(results2));
-        matchCount = new Array(results.length).fill(0);
-        for (var i = 0; i < results.length; i++) {
-          var keywords = results[i].getAttribute('data-keywords').split(',');
-          for (var j = 0; j < terms.length; j++) {
-            if (keywords.includes(terms[j])) {
-              matchCount[i]++;
-            }
-          }
+        if (text.includes(searchText)) {
+          element.style.display = 'block';
+        } else {
+          element.style.display = 'none';
         }
-        results.sort(function(a, b) {
-          return matchCount[Array.from(results).indexOf(b)] - matchCount[Array.from(results).indexOf(a)];
-        });
-      } else if (terms.length === 3) {
-        var results1 = document.querySelectorAll('.result-item[data-keywords*="' + terms[0] + '"]');
-        var results2 = document.querySelectorAll('.result-item[data-keywords*="' + terms[1] + '"]');
-        var results3 = document.querySelectorAll('.result-item[data-keywords*="' + terms[2] + '"]');
-        results = Array.from(results1).concat(Array.from(results2), Array.from(results3));
-        matchCount = new Array(results.length).fill(0);
-        for (var i = 0; i < results.length; i++) {
-          var keywords = results[i].getAttribute('data-keywords').split(',');
-          for (var j = 0; j < terms.length; j++) {
-            if (keywords.includes(terms[j])) {
-              matchCount[i]++;
-            }
-          }
-        }
-        results.sort(function(a, b) {
-          return matchCount[Array.from(results).indexOf(b)] - matchCount[Array.from(results).indexOf(a)];
-        });
       }
-
-      var resultsContainer = document.getElementById('results-container');
-      resultsContainer.innerHTML = '';
-
-      for (var i = 0; i < results.length; i++) {
-        resultsContainer.appendChild(results[i]);
-      }
-    }
-
-    function reset() {
-      var resultsContainer = document.getElementById('results-container');
-      resultsContainer.innerHTML = '';
-
-      var resultItems = document.getElementsByClassName('result-item');
-      for (var i = 0; i < resultItems.length; i++) {
-        resultsContainer.appendChild(resultItems[i]);
-      }
-
-      document.getElementById('search-input').value = '';
     }
   </script>
 </head>
 <body>
-  <div class="header">
-    <img src="https://www.coevorden.nl/_next/image?url=http%3A%2F%2Fdvg-backend-httpd%2Fsites%2Fcoevorden%2Ffiles%2Fstyles%2Fopen_online_17_4%2Fpublic%2F2023-03%2Fpoortvdrenthe%25201920x450.jpg%3Fh%3D8c9f5fdd%26itok%3DNUCuPP_u&w=1920&q=75" style="width: 100%;" alt="Voorbeeld afbeelding">
-  </div>
+  <input type="text" id="searchInput" placeholder="Zoeken..." onkeyup="search()"> 
 
-  <div class="search-container">
-    <input type="text" id="search-input" class="search-input" placeholder="Voer een zoekwoord in">
-    <button class="search-button" onclick="search()">Zoeken</button>
-    <button class="reset-button" onclick="reset()">Reset</button>
-  </div>
 
-  <div id="results-container" class="results-container">
-    <div class="result-item" data-keywords="woord1,woord2,woord3">
-      <a href="link1.html">Voorbeeldlink 1</a>
-    </div>
-    <div class="result-item" data-keywords="woord2,woord3">
-      <a href="link2.html">Voorbeeldlink 2</a>
-    </div>
-    <div class="result-item" data-keywords="woord1,woord3">
-      <a href="link3.html">Voorbeeldlink 3</a>
-    </div>
-    <div class="result-item" data-keywords="woord1,woord2">
-      <a href="link4.html">Voorbeeldlink 4</a>
-    </div>
-  </div>
+<ul>
+  <div class="searchable">
+<li><a href='./Bijlage 1. Ossehaar - Verzamelbrief opvang Oekraïne.pdf'>./Bijlage 1. Ossehaar - Verzamelbrief opvang Oekraïne.pdf</a></li>
+</div>
+  <div class="searchable">
+<li><a href='./Bijlage 2. Ossehaar - VNG ledenbrief gevolgen oorlog Oekraïne.pdf'>./Bijlage 2. Ossehaar - VNG ledenbrief gevolgen oorlog Oekraïne.pdf</a></li>
+</div>
+  <div class="searchable">
+<li><a href='./Woo-verzoek permanente bewoning Ermerzand.pdf'>./Woo-verzoek permanente bewoning Ermerzand.pdf</a></li>
+</div>
+  <div class="searchable">
+<li><a href='./Woogemeenten.pdf'>./Woogemeenten.pdf</a></li>
+</div>
+</ul>
+
+
 </body>
 </html>
