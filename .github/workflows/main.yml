@@ -29,7 +29,7 @@ jobs:
         run: |
           find . -name "*.pdf" | while read filename; do
             html_file="${filename%.*}.html"
-            pdf2htmlex "$filename" "$html_file"
+            pdf2htmlEX "$filename" "$html_file"
             mv "$html_file" docs/
           done
 
