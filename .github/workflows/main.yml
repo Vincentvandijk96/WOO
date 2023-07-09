@@ -27,7 +27,6 @@ jobs:
 
       - name: Convert PDF to HTML
         run: |
-          echo "</ul></body></html>" >> docs/index.html
           echo "<html><body><ul>" > docs/index.html
           find . -name "*.pdf" -print0 | while IFS= read -r -d '' file; do
             filename=$(basename "$file" .pdf)
