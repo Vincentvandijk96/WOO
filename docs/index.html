@@ -43,7 +43,6 @@
             margin-bottom: 10px;
             padding: 10px;
             border: 1px solid #ccc;
-            display: none;
         }
     </style>
 </head>
@@ -79,32 +78,29 @@
             var searchInput = document.getElementById('searchInput');
             var searchTerm = searchInput.value.toLowerCase();
             var linkContainer = document.getElementById('links');
-            var links = linkContainer.getElementsByClassName('link');
-
-            if (searchTerms.length === 0) {
-                showAllLinks();
-            }
+            var links = Array.from(linkContainer.getElementsByClassName('link'));
 
             searchTerms.push(searchTerm);
             document.getElementById('searchWord').textContent = searchTerms.join(', ');
             resetLinks();
 
-            for (var i = 0; i < links.length; i++) {
-                var link = links[i];
-                var linkTitle = link.getElementsByTagName('h4')[0].textContent.toLowerCase();
-                var matchCount = 0;
+            links.sort(function (a, b) {
+                var matchCountA = getMatchCount(a);
+                var matchCountB = getMatchCount(b);
 
-                for (var j = 0; j < searchTerms.length; j++) {
-                    if (linkTitle.indexOf(searchTerms[j]) !== -1) {
-                        matchCount++;
-                    }
+                if (matchCountA > matchCountB) {
+                    return -1;
+                } else if (matchCountA < matchCountB) {
+                    return 1;
+                } else {
+                    return 0;
                 }
+            });
 
-                if (matchCount > 0) {
-                    link.style.display = 'block';
-                    link.style.order = -matchCount;
-                }
-            }
+            links.forEach(function (link) {
+                link.style.display = 'block';
+                linkContainer.appendChild(link);
+            });
 
             searchInput.value = '';
             document.getElementById('resetButton').style.display = 'inline-block';
@@ -113,30 +109,30 @@
         function resetSearch() {
             searchTerms = [];
             document.getElementById('searchWord').textContent = '';
-            showAllLinks();
             resetLinks();
             document.getElementById('resetButton').style.display = 'none';
         }
 
         function resetLinks() {
             var linkContainer = document.getElementById('links');
-            var links = linkContainer.getElementsByClassName('link');
+            var links = Array.from(linkContainer.getElementsByClassName('link'));
 
-            for (var i = 0; i < links.length; i++) {
-                var link = links[i];
-                link.style.display = 'none';
-            }
+            links.forEach(function (link) {
+                link.style.display = 'block';
+            });
         }
 
-        function showAllLinks() {
-            var linkContainer = document.getElementById('links');
-            var links = linkContainer.getElementsByClassName('link');
+        function getMatchCount(link) {
+            var linkTitle = link.getElementsByTagName('h4')[0].textContent.toLowerCase();
+            var matchCount = 0;
 
-            for (var i = 0; i < links.length; i++) {
-                var link = links[i];
-                link.style.display = 'block';
-                link.style.order = 0;
+            for (var j = 0; j < searchTerms.length; j++) {
+                if (linkTitle.indexOf(searchTerms[j]) !== -1) {
+                    matchCount++;
+                }
             }
+
+            return matchCount;
         }
     </script>
 </body>
