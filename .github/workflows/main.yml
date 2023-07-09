@@ -27,7 +27,6 @@ jobs:
           
       - name: Convert PDF naar HTML
         run: |
-          mkdir docs
           find . -name "*.pdf" | while read filename; do
             html_file="${filename%.*}.html"
             pdf2htmlex "$filename" "$html_file"
