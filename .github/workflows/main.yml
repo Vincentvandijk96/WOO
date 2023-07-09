@@ -25,7 +25,7 @@ jobs:
         run: |
           cp web/index.html docs/index.html
           cd docs
-          echo "<ul>" > index.html
+          echo "<ul>" >> index.html
           find . -name "*.pdf" | while read filename; do
             echo "<li><a href='$filename'>$filename</a></li>" >> index.html
           done
