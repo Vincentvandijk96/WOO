@@ -13,29 +13,29 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v2
 
-      - name: Install pdf2html
+      - name: Install pdf2htmlex
         run: |
           sudo apt-get update
-          sudo apt-get install -y poppler-utils
+          sudo apt-get install -y libfontconfig1 libcairo2 libjpeg-turbo8
+          wget https://github.com/pdf2htmlEX/pdf2htmlEX/releases/download/v0.18.8.rc1/pdf2htmlEX-0.18.8.rc1-master-20200630-Ubuntu-bionic-x86_64.deb
+          sudo mv pdf2htmlEX-0.18.8.rc1-master-20200630-Ubuntu-bionic-x86_64.deb pdf2htmlEX.deb
+          sudo apt install ./pdf2htmlEX.deb
 
       - name: Remove existing HTML files
         run: |
           rm -f docs/*
 
-
       - name: Convert PDF to HTML
         run: |
           echo "</ul></body></html>" >> docs/index.html
-          mkdir -p docs
           echo "<html><body><ul>" > docs/index.html
           find . -name "*.pdf" -print0 | while IFS= read -r -d '' file; do
             filename=$(basename "$file" .pdf)
             htmlname="docs/$filename.html"
-            pdftohtml -s -c "$file" "$htmlname"
+            pdf2htmlEX --embed cfijo --dest-dir docs "$file"
             echo "<li><a href='$filename.html'>$filename</a></li>" >> docs/index.html
           done
           echo "</ul></body></html>" >> docs/index.html
-          find docs -name "*-html.html" -exec bash -c 'mv "$0" "${0//-html/}"' {} \;
 
       - name: Generate sitemap.xml
         run: |
@@ -49,7 +49,6 @@ jobs:
             echo "  </url>" >> sitemap.xml
           done
           echo "</urlset>" >> sitemap.xml
-
 
       - name: Commit changes
         run: |
