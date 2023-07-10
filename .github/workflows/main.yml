@@ -27,9 +27,9 @@ jobs:
           cd docs
           echo "<ul>" >> index.html
           find . -name "*.pdf" | while read filename; do
-            echo "<div class="searchable"><li><a href='$(basename "$filename")'>$(basename "$filename")</a></li></div>" >> index.html
+            echo "<li class="searchable"><div class="prefix">1</div><a href='$(basename "$filename")'>$(basename "$filename")</a></li>" >> index.html
           done
-          echo "</ul></body></html>" >> index.html
+          echo "</ul></div></body></html>" >> index.html
 
       - name: Generate sitemap.xml
         run: |
