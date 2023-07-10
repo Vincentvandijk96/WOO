@@ -31,7 +31,11 @@ jobs:
             echo "<li class="searchable"><div class="prefix">$i</div><a href='$(basename "$filename")'>$(basename "$filename")</a></li>" >> index.html
           i=$((i+1))  # Increment the value of i by 1
           done
-          echo "</ul></div></body></html>" >> index.html
+          echo "</ul>" >> index.html
+          echo "  <div class="copyright">
+          &copy; 2023 Vincent van Dijk | Alle rechten voorbehouden | <a class="linkedin-link" href="https://www.linkedin.com/in/vincent-van-dijk-6a6431113/">LinkedIn</a>
+          </div>" >> index.html
+          echo "</div></body></html>" >> index.html
 
       - name: Generate sitemap.xml
         run: |
