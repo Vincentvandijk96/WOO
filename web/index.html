@@ -1,7 +1,84 @@
 <!DOCTYPE html>
 <html>
 <head>
+  <meta charset="UTF-8">
   <title>Zoekbalk voor HTML-pagina</title>
+  <style>
+    /* CSS styles for the layout */
+    body {
+      margin: -3px!important;
+      font-family: arial, "Open Sans", sans-serif;
+    }
+
+    div#inkorten {
+      margin-top: -45px;
+    }
+
+    .content {
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+      list-style-type: none;
+    }
+
+    li:hover {
+      background-color: #98b300;
+    }
+
+    li a {
+      text-decoration: none;
+      color: black;
+    }
+
+    ul {
+      padding: 0px;
+    }
+
+
+    #searchInput {
+      width: 100%;
+      padding: 10px;
+      font-size: 16px;
+      background-color: #98b300;
+      border:none;
+      text-align:center;
+      outline:none
+    }
+
+    #searchInput::placeholder {
+        color: black;
+    }
+
+    #searchInput:focus::placeholder {
+        color: #98b300;
+        border:none;
+    }
+
+li .prefix {
+  margin-right: 10px;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background-color: #685c80;
+  color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+  </style>
+</head>
+<body>
+  <div id="inkorten">
+    <div id="customgpt_chat"></div>
+    <script src="https://cdn.customgpt.ai/js/embed.js" div_id="customgpt_chat" p_id="7775" p_key="5096869d96f2d2122c108b3fee7478ec" width="100%" height="500px"></script>
+  </div>
+
   <script>
     function search() {
       var input = document.getElementById('searchInput');
@@ -13,15 +90,13 @@
         var text = element.innerText.toLowerCase();
 
         if (text.includes(searchText)) {
-          element.style.display = 'block';
+          element.style.display = 'flex';
         } else {
           element.style.display = 'none';
         }
       }
     }
   </script>
-</head>
-<body>
-  <input type="text" id="searchInput" placeholder="Zoeken..." onkeyup="search()"> 
 
-
+  <div class="content">
+    <input type="text" id="searchInput" placeholder="Zoeken..." onkeyup="search()">
