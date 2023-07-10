@@ -25,11 +25,11 @@ jobs:
         run: |
           cp web/index.html docs/index.html
           cd docs
-          echo "<ul>" >> verwijzingen.html
+          echo "<ul>" >> index.html
           find . -name "*.pdf" | while read filename; do
-            echo "<div class="searchable"><li><a href='$filename'>$filename</a></li></div>" >> verwijzingen.html
+            echo "<div class="searchable"><li><a href='$filename'>$filename</a></li></div>" >> index.html
           done
-          echo "</ul>" >> verwijzingen.html
+          echo "</ul></body></html>" >> index.html
 
       - name: Generate sitemap.xml
         run: |
