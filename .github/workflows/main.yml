@@ -27,7 +27,7 @@ jobs:
           cd docs
           echo "<ul>" >> index.html
           find . -name "*.pdf" | while read filename; do
-            echo "<div class="searchable"><li><a href='$filename'>$filename</a></li></div>" >> index.html
+            echo "<div class="searchable"><li><a href='$(basename "$filename")'>$(basename "$filename")</a></li></div>" >> index.html
           done
           echo "</ul></body></html>" >> index.html
 
