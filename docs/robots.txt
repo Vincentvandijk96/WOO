@@ -1,1 +1,2 @@
-https://vincentvandijk96.github.io/WOO/
+User-agent: *
+Allow: /
