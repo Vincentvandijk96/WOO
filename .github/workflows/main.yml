@@ -25,7 +25,6 @@ jobs:
         run: |
           cp web/index.html docs/index.html
           cp web/robots.txt docs/robots.txt
-          cp web/google.html docs/google.html
           cd docs
           echo "<ul>" >> index.html
           find . -name "*.pdf" | sort -r -k1,1 | while read -r filename; do
